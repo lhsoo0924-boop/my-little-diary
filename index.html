@@ -48,7 +48,7 @@
       gap: 30px;
 
       width: 90%;
-      max-width: 1100px;
+      max-width: 1420px;
     }
 
 
@@ -577,6 +577,174 @@
 
 
     /* =====================================================
+       MY TOP SONGS
+    ===================================================== */
+
+    .top-songs-card {
+      width: 280px;
+      height: 450px;
+
+      background: #FFFFFF;
+
+      border-radius: 20px;
+
+      box-shadow:
+        0 10px 25px
+        rgba(180, 150, 160, 0.25);
+
+      box-sizing: border-box;
+
+      padding: 20px;
+
+      display: flex;
+      flex-direction: column;
+
+      flex-shrink: 0;
+    }
+
+
+    .top-songs-title {
+      color: #9b7b86;
+
+      font-size: 18px;
+
+      text-align: center;
+
+      margin-bottom: 20px;
+
+      white-space: nowrap;
+    }
+
+
+    .top-songs-list {
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 8px;
+    }
+
+
+    .top-song {
+      height: 52px;
+
+      display: flex;
+
+      align-items: center;
+
+      padding: 0 8px;
+
+      box-sizing: border-box;
+
+      border-radius: 12px;
+
+      color: #8d6c6c;
+
+      transition:
+        background-color 0.2s ease,
+        transform 0.15s ease;
+    }
+
+
+    .top-song:hover {
+      background-color: #F8E8EE;
+
+      transform: translateX(3px);
+    }
+
+
+    .song-rank {
+      width: 30px;
+
+      color: #c49eaa;
+
+      font-size: 13px;
+
+      flex-shrink: 0;
+    }
+
+
+    .song-title {
+      flex: 1;
+
+      min-width: 0;
+
+      overflow: hidden;
+
+      white-space: nowrap;
+
+      text-overflow: ellipsis;
+
+      font-size: 15px;
+    }
+
+
+    /* =========================
+       재생 버튼
+    ========================= */
+
+    .song-play {
+      width: 30px;
+      height: 30px;
+
+      border: none;
+
+      border-radius: 50%;
+
+      background-color: #F7B6C9;
+
+      color: white;
+
+      font-size: 13px;
+
+      cursor: pointer;
+
+      font-family: inherit;
+
+      opacity: 0;
+
+      transform: scale(0.7);
+
+      transition:
+        opacity 0.2s ease,
+        transform 0.2s ease,
+        background-color 0.2s ease;
+
+      flex-shrink: 0;
+    }
+
+
+    .top-song:hover .song-play {
+      opacity: 1;
+
+      transform: scale(1);
+    }
+
+
+    .song-play:hover {
+      background-color: #e99eb5;
+    }
+
+
+    .song-play:active {
+      transform: scale(0.85);
+    }
+
+
+    .empty-top-songs {
+      color: #bda5ad;
+
+      font-size: 14px;
+
+      text-align: center;
+
+      line-height: 1.7;
+
+      margin-top: 40px;
+    }
+
+
+    /* =====================================================
        음악 추가 팝업
     ===================================================== */
 
@@ -642,10 +810,40 @@
       font-family: inherit;
 
       color: #8d6c6c;
+
+      margin-bottom: 10px;
     }
 
 
     .youtube-input:focus {
+      border-color: #F7B6C9;
+    }
+
+
+    .song-name-input {
+      width: 100%;
+
+      height: 42px;
+
+      box-sizing: border-box;
+
+      border: 1px solid #ead5dc;
+
+      border-radius: 12px;
+
+      padding: 0 12px;
+
+      outline: none;
+
+      font-family: inherit;
+
+      color: #8d6c6c;
+
+      margin-bottom: 10px;
+    }
+
+
+    .song-name-input:focus {
       border-color: #F7B6C9;
     }
 
@@ -657,7 +855,7 @@
 
       gap: 10px;
 
-      margin-top: 15px;
+      margin-top: 5px;
     }
 
 
@@ -706,13 +904,23 @@
        화면이 작아졌을 때
     ========================= */
 
+    @media (max-width: 1250px) {
+
+      .content-area {
+        flex-wrap: wrap;
+      }
+
+    }
+
+
     @media (max-width: 900px) {
 
       .content-area {
         flex-direction: column;
       }
 
-      .music-card {
+      .music-card,
+      .top-songs-card {
         width: 100%;
         max-width: 600px;
       }
@@ -738,7 +946,7 @@
 
 
     <!-- =================================================
-         달력 + 음악 카드
+         달력 + 음악 카드 + TOP SONGS
     ================================================= -->
 
     <div class="content-area">
@@ -897,6 +1105,24 @@
       </div>
 
 
+      <!-- =================================================
+           MY TOP SONGS
+      ================================================= -->
+
+      <div class="top-songs-card">
+
+        <div class="top-songs-title">
+          ♡ MY TOP SONGS ♡
+        </div>
+
+        <div
+          class="top-songs-list"
+          id="topSongsList"
+        ></div>
+
+      </div>
+
+
     </div>
 
 
@@ -918,6 +1144,14 @@
       <h2>
         🎵 음악 추가
       </h2>
+
+
+      <input
+        type="text"
+        id="songNameInput"
+        class="song-name-input"
+        placeholder="곡 제목을 입력해주세요"
+      >
 
 
       <input
@@ -1223,7 +1457,7 @@
 
 
       document.getElementById(
-        "youtubeInput"
+        "songNameInput"
       ).focus();
 
     }
@@ -1234,6 +1468,11 @@
       document.getElementById(
         "musicModal"
       ).style.display = "none";
+
+
+      document.getElementById(
+        "songNameInput"
+      ).value = "";
 
 
       document.getElementById(
@@ -1296,11 +1535,59 @@
     }
 
 
-    /* =========================
+    /* =================================================
+       TOP SONGS 데이터
+    ================================================= */
+
+    function getTopSongs() {
+
+      const saved =
+        localStorage.getItem(
+          "diaryTopSongs"
+        );
+
+
+      if (!saved) {
+
+        return [];
+
+      }
+
+
+      try {
+
+        return JSON.parse(saved);
+
+      } catch (error) {
+
+        return [];
+
+      }
+
+    }
+
+
+    function saveTopSongs(songs) {
+
+      localStorage.setItem(
+        "diaryTopSongs",
+        JSON.stringify(songs)
+      );
+
+    }
+
+
+    /* =================================================
        음악 추가
-    ========================= */
+    ================================================= */
 
     function addMusic() {
+
+      const songName =
+        document.getElementById(
+          "songNameInput"
+        ).value.trim();
+
 
       const url =
         document.getElementById(
@@ -1310,6 +1597,17 @@
 
       const videoId =
         getYoutubeId(url);
+
+
+      if (!songName) {
+
+        alert(
+          "곡 제목을 입력해주세요!"
+        );
+
+        return;
+
+      }
 
 
       if (!videoId) {
@@ -1323,7 +1621,70 @@
       }
 
 
-      /* YouTube 영상 */
+      /* TOP SONGS 가져오기 */
+
+      const songs =
+        getTopSongs();
+
+
+      /* 같은 곡이 이미 있는지 확인 */
+
+      const existingSong =
+        songs.find(
+          function(song) {
+
+            return song.videoId === videoId;
+
+          }
+        );
+
+
+      /* 새 곡이면 추가 */
+
+      if (!existingSong) {
+
+        songs.push({
+
+          title: songName,
+
+          url: url,
+
+          videoId: videoId,
+
+          plays: 0
+
+        });
+
+      }
+
+
+      saveTopSongs(songs);
+
+
+      /* 아이팟에서 재생 */
+
+      playMusic(
+        videoId,
+        false
+      );
+
+
+      closeMusicModal();
+
+
+      renderTopSongs();
+
+    }
+
+
+    /* =================================================
+       음악 재생
+    ================================================= */
+
+    function playMusic(
+      videoId,
+      countPlay
+    ) {
 
       const screen =
         document.getElementById(
@@ -1342,39 +1703,268 @@
       `;
 
 
-      /* 삭제 버튼 */
-
       document.getElementById(
         "deleteMusicButton"
       ).style.display =
         "block";
 
 
-      /* 저장 */
+      /* TOP SONGS 재생 횟수 증가 */
 
-      localStorage.setItem(
-        "diaryMusic",
-        JSON.stringify({
-          url: url,
-          videoId: videoId
-        })
-      );
+      if (countPlay) {
+
+        const songs =
+          getTopSongs();
 
 
-      closeMusicModal();
+        const song =
+          songs.find(
+            function(item) {
+
+              return item.videoId === videoId;
+
+            }
+          );
+
+
+        if (song) {
+
+          song.plays++;
+
+          saveTopSongs(songs);
+
+          renderTopSongs();
+
+        }
+
+      }
 
     }
 
 
-    /* =========================
-       음악 삭제
-    ========================= */
+    /* =================================================
+       TOP SONGS에서 음악 재생
+    ================================================= */
+
+    function playTopSong(videoId) {
+
+      playMusic(
+        videoId,
+        true
+      );
+
+    }
+
+
+    /* =================================================
+       TOP SONGS 표시
+    ================================================= */
+
+    function renderTopSongs() {
+
+      const list =
+        document.getElementById(
+          "topSongsList"
+        );
+
+
+      list.innerHTML = "";
+
+
+      const songs =
+        getTopSongs();
+
+
+      if (songs.length === 0) {
+
+        list.innerHTML = `
+
+          <div class="empty-top-songs">
+            아직 음악이 없어요 ♡<br>
+            음악을 추가해보세요!
+          </div>
+
+        `;
+
+        return;
+
+      }
+
+
+      /* 많이 들은 순서 */
+
+      songs.sort(
+        function(a, b) {
+
+          return b.plays - a.plays;
+
+        }
+      );
+
+
+      /* TOP 5 */
+
+      const topSongs =
+        songs.slice(0, 5);
+
+
+      topSongs.forEach(
+        function(song, index) {
+
+          const row =
+            document.createElement(
+              "div"
+            );
+
+
+          row.className =
+            "top-song";
+
+
+          const rank =
+            document.createElement(
+              "span"
+            );
+
+
+          rank.className =
+            "song-rank";
+
+
+          rank.innerText =
+            String(index + 1).padStart(
+              2,
+              "0"
+            );
+
+
+          const title =
+            document.createElement(
+              "span"
+            );
+
+
+          title.className =
+            "song-title";
+
+
+          title.innerText =
+            song.title;
+
+
+          const playButton =
+            document.createElement(
+              "button"
+            );
+
+
+          playButton.className =
+            "song-play";
+
+
+          playButton.innerText =
+            "▶";
+
+
+          playButton.title =
+            "재생";
+
+
+          playButton.onclick =
+            function(event) {
+
+              event.stopPropagation();
+
+              playTopSong(
+                song.videoId
+              );
+
+            };
+
+
+          row.appendChild(
+            rank
+          );
+
+
+          row.appendChild(
+            title
+          );
+
+
+          row.appendChild(
+            playButton
+          );
+
+
+          list.appendChild(
+            row
+          );
+
+        }
+      );
+
+
+      saveTopSongs(songs);
+
+    }
+
+
+    /* =================================================
+       현재 음악 삭제
+    ================================================= */
 
     function deleteMusic() {
+
+      const savedMusic =
+        localStorage.getItem(
+          "diaryMusic"
+        );
+
+
+      /* 기존 음악 정보 삭제 */
 
       localStorage.removeItem(
         "diaryMusic"
       );
+
+
+      /* TOP SONGS에서도 현재 음악 삭제 */
+
+      if (savedMusic) {
+
+        try {
+
+          const music =
+            JSON.parse(
+              savedMusic
+            );
+
+
+          const songs =
+            getTopSongs();
+
+
+          const newSongs =
+            songs.filter(
+              function(song) {
+
+                return song.videoId !==
+                  music.videoId;
+
+              }
+            );
+
+
+          saveTopSongs(
+            newSongs
+          );
+
+        } catch (error) {
+
+        }
+
+      }
 
 
       document.getElementById(
@@ -1394,12 +1984,15 @@
       ).style.display =
         "none";
 
+
+      renderTopSongs();
+
     }
 
 
-    /* =========================
+    /* =================================================
        저장된 음악 불러오기
-    ========================= */
+    ================================================= */
 
     function loadMusic() {
 
@@ -1410,33 +2003,24 @@
 
 
       if (!savedMusic) {
+
         return;
+
       }
 
 
       try {
 
         const music =
-          JSON.parse(savedMusic);
+          JSON.parse(
+            savedMusic
+          );
 
 
-        document.getElementById(
-          "ipodScreen"
-        ).innerHTML = `
-
-          <iframe
-            src="https://www.youtube.com/embed/${music.videoId}"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-          ></iframe>
-
-        `;
-
-
-        document.getElementById(
-          "deleteMusicButton"
-        ).style.display =
-          "block";
+        playMusic(
+          music.videoId,
+          false
+        );
 
 
       } catch (error) {
@@ -1450,13 +2034,67 @@
     }
 
 
-    /* =========================
+    /* =================================================
+       음악 저장 정보 자동 관리
+    ================================================= */
+
+    function updateCurrentMusicStorage() {
+
+      const iframe =
+        document.querySelector(
+          "#ipodScreen iframe"
+        );
+
+
+      if (!iframe) {
+
+        return;
+
+      }
+
+
+      const src =
+        iframe.src;
+
+
+      const match =
+        src.match(
+          /embed\/([^?]+)/
+        );
+
+
+      if (!match) {
+
+        return;
+
+      }
+
+
+      const videoId =
+        match[1];
+
+
+      localStorage.setItem(
+        "diaryMusic",
+        JSON.stringify({
+
+          videoId: videoId
+
+        })
+      );
+
+    }
+
+
+    /* =================================================
        처음 실행
-    ========================= */
+    ================================================= */
 
     makeCalendar();
 
     loadMusic();
+
+    renderTopSongs();
 
   </script>
 
