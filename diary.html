@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Little Diary</title>
+
+<style>
+
+/* =========================
+   폰트
+========================= */
+
+@font-face {
+  font-family: 'SchoolSafetyManitto';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2511-1@1.0/HakgyoansimManitoR.woff2') format('woff2');
+  font-weight: normal;
+  font-display: swap;
+}
+
+
+/* =========================
+   전체
+========================= */
+
+body {
+  background-color: #F8E8EE;
+
+  margin: 0;
+
+  min-height: 100vh;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  padding: 40px 20px;
+
+  box-sizing: border-box;
+
+  font-family: 'SchoolSafetyManitto', sans-serif;
+}
+
+
+/* =========================
+   일기장 카드
+========================= */
+
+.diary {
+  width: 90%;
+  max-width: 600px;
+
+  min-height: 650px;
+
+  background-color: #FFFFFF;
+
+  border-radius: 20px;
+
+  padding: 25px;
+
+  box-sizing: border-box;
+
+  box-shadow:
+    0 10px 25px
+    rgba(180, 150, 160, 0.25);
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+
+/* =========================
+   뒤로가기
+========================= */
+
+.back {
+  border: none;
+
+  background: none;
+
+  color: #9b7b86;
+
+  font-size: 16px;
+
+  cursor: pointer;
+
+  align-self: flex-start;
+
+  padding: 5px 0;
+
+  margin-bottom: 15px;
+
+  font-family: inherit;
+}
+
+.back:hover {
+  color: #d58ca3;
+}
+
+
+/* =========================
+   날짜 + 제목
+========================= */
+
+.top {
+  background-color: #F3E0E6;
+
+  border-radius: 15px;
+
+  padding: 15px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+}
+
+
+/* 날짜 */
+
+.date-box {
+  width: 85px;
+  height: 65px;
+
+  background-color: white;
+
+  border-radius: 15px;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  color: #8d6c6c;
+
+  font-size: 20px;
+
+  font-weight: normal;
+
+  flex-shrink: 0;
+}
+
+
+/* 제목 */
+
+.title {
+  flex: 1;
+
+  border: none;
+
+  background: none;
+
+  font-size: 24px;
+
+  color: #8d6c6c;
+
+  outline: none;
+
+  font-family: inherit;
+}
+
+.title::placeholder {
+  color: #bda5ad;
+}
+
+
+/* =========================
+   일기 내용
+========================= */
+
+.content {
+  width: 100%;
+
+  height: 380px;
+
+  margin-top: 25px;
+
+  border: none;
+
+  resize: none;
+
+  outline: none;
+
+  box-sizing: border-box;
+
+  padding: 5px 8px;
+
+  color: #8d6c6c;
+
+  font-size: 17px;
+
+  line-height: 2;
+
+  font-family: inherit;
+
+  background-image:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 33px,
+      rgba(247, 182, 201, 0.55) 34px,
+      transparent 35px
+    );
+
+  background-attachment: local;
+
+  overflow-y: auto;
+}
+
+.content::placeholder {
+  color: #bda5ad;
+}
+
+
+/* =========================
+   일기 스크롤바
+========================= */
+
+.content::-webkit-scrollbar {
+  width: 7px;
+}
+
+.content::-webkit-scrollbar-thumb {
+  background-color: #F3C4D2;
+
+  border-radius: 10px;
+}
+
+.content::-webkit-scrollbar-track {
+  background-color: #FAF1F4;
+
+  border-radius: 10px;
+}
+
+
+/* =========================
+   사진 영역
+========================= */
+
+.photo-area {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  margin-top: 10px;
+
+  max-height: 150px;
+
+  overflow-y: auto;
+}
+
+
+/* 사진 하나 */
+
+.photo-wrapper {
+  position: relative;
+
+  width: 90px;
+  height: 90px;
+
+  border-radius: 12px;
+
+  overflow: hidden;
+
+  cursor: pointer;
+}
+
+
+/* 사진 */
+
+.photo-wrapper img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  display: block;
+}
+
+
+/* =========================
+   사진 hover
+========================= */
+
+.photo-overlay {
+  position: absolute;
+
+  inset: 0;
+
+  background-color:
+    rgba(247, 182, 201, 0.75);
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  opacity: 0;
+
+  transition: opacity 0.2s;
+
+  pointer-events: none;
+}
+
+.photo-wrapper:hover .photo-overlay {
+  opacity: 1;
+}
+
+
+/* 사진 보기 글씨 */
+
+.photo-overlay-text {
+  color: white;
+
+  font-size: 13px;
+
+  pointer-events: none;
+}
+
+
+/* =========================
+   사진 삭제 X
+========================= */
+
+.photo-delete {
+  position: absolute;
+
+  top: 5px;
+  left: 5px;
+
+  width: 24px;
+  height: 24px;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background-color: white;
+
+  color: #d58ca3;
+
+  font-size: 16px;
+
+  line-height: 24px;
+
+  padding: 0;
+
+  cursor: pointer;
+
+  font-family: inherit;
+
+  z-index: 5;
+
+  opacity: 0;
+
+  transition: opacity 0.2s;
+}
+
+
+/* hover했을 때만 X */
+
+.photo-wrapper:hover .photo-delete {
+  opacity: 1;
+}
+
+
+/* =========================
+   사진 영역 스크롤바
+========================= */
+
+.photo-area::-webkit-scrollbar {
+  width: 5px;
+}
+
+.photo-area::-webkit-scrollbar-thumb {
+  background-color: #F3C4D2;
+
+  border-radius: 10px;
+}
+
+
+/* =========================
+   버튼 영역
+========================= */
+
+.button-area {
+  display: flex;
+
+  gap: 10px;
+
+  margin-top: 15px;
+}
+
+
+/* 사진 추가 */
+
+.photo-button {
+  border: none;
+
+  background-color: #F3E0E6;
+
+  color: #9b7b86;
+
+  padding: 13px 20px;
+
+  border-radius: 15px;
+
+  cursor: pointer;
+
+  font-size: 15px;
+
+  font-family: inherit;
+}
+
+.photo-button:hover {
+  background-color: #efd2db;
+}
+
+
+/* 저장 */
+
+.save {
+  border: none;
+
+  background-color: #F7B6C9;
+
+  color: white;
+
+  padding: 13px 25px;
+
+  border-radius: 15px;
+
+  cursor: pointer;
+
+  font-size: 15px;
+
+  font-family: inherit;
+}
+
+.save:hover {
+  background-color: #eda4ba;
+}
+
+
+/* 파일 선택 버튼 */
+
+#photoInput {
+  display: none;
+}
+
+
+/* =========================
+   사진 확대 화면
+========================= */
+
+.photo-modal {
+  position: fixed;
+
+  inset: 0;
+
+  background-color:
+    rgba(247, 182, 201, 0.70);
+
+  display: none;
+
+  justify-content: center;
+  align-items: center;
+
+  z-index: 9999;
+
+  padding: 30px;
+
+  box-sizing: border-box;
+}
+
+
+/* 확대 화면 표시 */
+
+.photo-modal.show {
+  display: flex;
+}
+
+
+/* 확대된 사진 박스 */
+
+.modal-photo-box {
+  position: relative;
+
+  max-width: 85vw;
+  max-height: 85vh;
+
+  background-color: white;
+
+  border-radius: 18px;
+
+  padding: 10px;
+
+  box-sizing: border-box;
+
+  box-shadow:
+    0 10px 35px
+    rgba(0, 0, 0, 0.2);
+}
+
+
+/* 확대된 사진 */
+
+.modal-photo-box img {
+  display: block;
+
+  max-width: 80vw;
+  max-height: 80vh;
+
+  width: auto;
+  height: auto;
+
+  object-fit: contain;
+
+  border-radius: 10px;
+}
+
+
+/* =========================
+   확대 화면 X
+========================= */
+
+.modal-close {
+  position: absolute;
+
+  top: -14px;
+  left: -14px;
+
+  width: 34px;
+  height: 34px;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background-color: #F7B6C9;
+
+  color: white;
+
+  font-size: 22px;
+
+  line-height: 34px;
+
+  padding: 0;
+
+  cursor: pointer;
+
+  font-family: inherit;
+
+  z-index: 10;
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="diary">
+
+
+  <!-- 달력으로 돌아가기 -->
+
+  <button
+    class="back"
+    onclick="goBack()"
+  >
+    ← 달력으로 돌아가기
+  </button>
+
+
+  <!-- 날짜 + 제목 -->
+
+  <div class="top">
+
+    <div
+      class="date-box"
+      id="dateBox"
+    ></div>
+
+
+    <input
+      class="title"
+      id="title"
+      maxlength="100"
+      placeholder="제목을 입력해주세요."
+    >
+
+  </div>
+
+
+  <!-- 일기 내용 -->
+
+  <textarea
+    class="content"
+    id="content"
+    maxlength="2000"
+    placeholder="오늘의 하루는 어땠나요?"
+  ></textarea>
+
+
+  <!-- 사진 -->
+
+  <div
+    class="photo-area"
+    id="photoArea"
+  ></div>
+
+
+  <!-- 버튼 -->
+
+  <div class="button-area">
+
+    <input
+      type="file"
+      id="photoInput"
+      accept="image/*"
+      multiple
+    >
+
+
+    <button
+      class="photo-button"
+      onclick="document.getElementById('photoInput').click()"
+    >
+      📷 사진 추가
+    </button>
+
+
+    <button
+      class="save"
+      onclick="saveDiary()"
+    >
+      저장하기
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- =========================
+     사진 확대 화면
+========================= -->
+
+<div
+  class="photo-modal"
+  id="photoModal"
+  onclick="closePhotoModal()"
+>
+
+  <div
+    class="modal-photo-box"
+    onclick="event.stopPropagation()"
+  >
+
+    <button
+      class="modal-close"
+      onclick="closePhotoModal()"
+    >
+      ×
+    </button>
+
+
+    <img
+      id="modalImage"
+      src=""
+      alt="확대된 사진"
+    >
+
+  </div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   선택한 날짜
+========================= */
+
+const day =
+  localStorage.getItem(
+    "selectedDate"
+  );
+
+
+const selectedYear =
+  localStorage.getItem(
+    "selectedYear"
+  );
+
+
+const selectedMonth =
+  localStorage.getItem(
+    "selectedMonth"
+  );
+
+
+/* =========================
+   날짜 표시
+========================= */
+
+document.getElementById(
+  "dateBox"
+).innerText =
+  selectedMonth + "." + day;
+
+
+/* =========================
+   사진 데이터
+========================= */
+
+let selectedPhotos = [];
+
+
+/* =========================
+   기존 일기 불러오기
+========================= */
+
+const savedDiary =
+  localStorage.getItem(
+    "diary-" +
+    day
+  );
+
+
+if (savedDiary) {
+
+  const diary =
+    JSON.parse(savedDiary);
+
+
+  document.getElementById(
+    "title"
+  ).value =
+    diary.title || "";
+
+
+  document.getElementById(
+    "content"
+  ).value =
+    diary.content || "";
+
+
+  selectedPhotos =
+    diary.photos || [];
+
+
+  showPhotos();
+
+}
+
+
+/* =========================
+   사진 선택
+========================= */
+
+document
+  .getElementById("photoInput")
+  .addEventListener(
+    "change",
+    function(event) {
+
+      const files =
+        event.target.files;
+
+
+      for (
+        const file of files
+      ) {
+
+        const reader =
+          new FileReader();
+
+
+        reader.onload =
+          function(e) {
+
+            selectedPhotos.push(
+              e.target.result
+            );
+
+            showPhotos();
+
+          };
+
+
+        reader.readAsDataURL(file);
+
+      }
+
+
+      event.target.value = "";
+
+    }
+  );
+
+
+/* =========================
+   사진 표시
+========================= */
+
+function showPhotos() {
+
+  const photoArea =
+    document.getElementById(
+      "photoArea"
+    );
+
+
+  photoArea.innerHTML = "";
+
+
+  selectedPhotos.forEach(
+    function(photo, index) {
+
+
+      const wrapper =
+        document.createElement(
+          "div"
+        );
+
+
+      wrapper.className =
+        "photo-wrapper";
+
+
+      /* 사진 */
+
+      const img =
+        document.createElement(
+          "img"
+        );
+
+
+      img.src = photo;
+
+      img.alt =
+        "일기에 추가한 사진";
+
+
+      img.addEventListener(
+        "click",
+        function(event) {
+
+          event.stopPropagation();
+
+          openPhotoModal(photo);
+
+        }
+      );
+
+
+      /* 분홍색 오버레이 */
+
+      const overlay =
+        document.createElement(
+          "div"
+        );
+
+
+      overlay.className =
+        "photo-overlay";
+
+
+      /* 사진 보기 */
+
+      const overlayText =
+        document.createElement(
+          "span"
+        );
+
+
+      overlayText.className =
+        "photo-overlay-text";
+
+
+      overlayText.innerText =
+        "사진 보기";
+
+
+      /* 삭제 X */
+
+      const deleteButton =
+        document.createElement(
+          "button"
+        );
+
+
+      deleteButton.className =
+        "photo-delete";
+
+
+      deleteButton.innerText =
+        "×";
+
+
+      deleteButton.title =
+        "사진 삭제";
+
+
+      /* 삭제 */
+
+      deleteButton.addEventListener(
+        "click",
+        function(event) {
+
+          event.stopPropagation();
+
+          selectedPhotos.splice(
+            index,
+            1
+          );
+
+          showPhotos();
+
+        }
+      );
+
+
+      /* 요소 조립 */
+
+      overlay.appendChild(
+        overlayText
+      );
+
+
+      wrapper.appendChild(
+        img
+      );
+
+
+      wrapper.appendChild(
+        overlay
+      );
+
+
+      wrapper.appendChild(
+        deleteButton
+      );
+
+
+      photoArea.appendChild(
+        wrapper
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================
+   사진 크게 보기
+========================= */
+
+function openPhotoModal(photo) {
+
+  const modal =
+    document.getElementById(
+      "photoModal"
+    );
+
+
+  const modalImage =
+    document.getElementById(
+      "modalImage"
+    );
+
+
+  modalImage.src =
+    photo;
+
+
+  modal.classList.add(
+    "show"
+  );
+
+}
+
+
+/* =========================
+   사진 크게 보기 닫기
+========================= */
+
+function closePhotoModal() {
+
+  const modal =
+    document.getElementById(
+      "photoModal"
+    );
+
+
+  const modalImage =
+    document.getElementById(
+      "modalImage"
+    );
+
+
+  modal.classList.remove(
+    "show"
+  );
+
+
+  modalImage.src = "";
+
+}
+
+
+/* =========================
+   일기 저장
+========================= */
+
+function saveDiary() {
+
+  const title =
+    document.getElementById(
+      "title"
+    ).value;
+
+
+  const content =
+    document.getElementById(
+      "content"
+    ).value;
+
+
+  if (
+    content.length > 2000
+  ) {
+
+    alert(
+      "일기는 최대 2000자까지 작성할 수 있어요."
+    );
+
+    return;
+
+  }
+
+
+  localStorage.setItem(
+
+    "diary-" + day,
+
+    JSON.stringify({
+
+      title: title,
+
+      content: content,
+
+      photos: selectedPhotos
+
+    })
+
+  );
+
+
+  alert(
+    "저장 완료 💕"
+  );
+
+}
+
+
+/* =========================
+   달력으로 돌아가기
+========================= */
+
+function goBack() {
+
+  location.href =
+    "index.html";
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Little Diary</title>
+
+  <style>
+
+    @font-face {
+      font-family: 'SchoolSafetyManitto';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2511-1@1.0/HakgyoansimManitoR.woff2') format('woff2');
+      font-weight: normal;
+      font-display: swap;
+    }
+
+
+    /* =========================
+       전체
+    ========================= */
+
+    body {
+      background-color: #F8E8EE;
+
+      margin: 0;
+      padding: 0;
+
+      min-height: 100vh;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      font-family: 'SchoolSafetyManitto', sans-serif;
+    }
+
+
+    /* =========================
+       전체 컨테이너
+    ========================= */
+
+    .container {
+      display: flex;
+      flex-direction: column;
+
+      align-items: center;
+
+      gap: 30px;
+
+      width: 90%;
+      max-width: 1100px;
+    }
+
+
+    /* =========================
+       제목
+    ========================= */
+
+    .title-img {
+      width: 100%;
+      max-width: 380px;
+      height: auto;
+    }
+
+
+    /* =========================
+       달력 + 음악 카드
+    ========================= */
+
+    .content-area {
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      gap: 30px;
+
+      width: 100%;
+    }
+
+
+    /* =========================
+       달력 카드
+    ========================= */
+
+    .card {
+      background-color: #FFFFFF;
+
+      width: 100%;
+      max-width: 600px;
+
+      height: 450px;
+
+      border-radius: 20px;
+
+      padding: 20px;
+
+      box-shadow:
+        0 10px 25px
+        rgba(180, 150, 160, 0.25);
+
+      box-sizing: border-box;
+
+      display: flex;
+      flex-direction: column;
+
+      gap: 15px;
+
+      flex-shrink: 0;
+    }
+
+
+    /* =========================
+       월 표시
+    ========================= */
+
+    .input-bar {
+      background-color: #F3E0E6;
+
+      height: 55px;
+
+      border-radius: 15px;
+
+      width: 100%;
+    }
+
+
+    /* =========================
+       월 + 화살표
+    ========================= */
+
+    .calendar-header {
+      height: 55px;
+
+      display: flex;
+
+      justify-content: center;
+      align-items: center;
+
+      gap: 25px;
+
+      color: #8d6c6c;
+
+      font-size: 22px;
+
+      font-weight: normal;
+    }
+
+
+    /* =========================
+       < > 버튼
+    ========================= */
+
+    .month-button {
+      border: none;
+
+      background: none;
+
+      color: #9b7b86;
+
+      font-size: 25px;
+
+      cursor: pointer;
+
+      padding: 5px 10px;
+
+      font-family: inherit;
+    }
+
+    .month-button:hover {
+      color: #d58ca3;
+    }
+
+
+    /* =========================
+       달력
+    ========================= */
+
+    .calendar {
+      flex: 1;
+
+      display: flex;
+      flex-direction: column;
+    }
+
+
+    .weekdays,
+    .days {
+      display: grid;
+
+      grid-template-columns:
+        repeat(7, 1fr);
+    }
+
+
+    /* =========================
+       요일
+    ========================= */
+
+    .weekdays {
+      margin-top: 10px;
+
+      color: #9b7b86;
+
+      font-weight: normal;
+
+      text-align: center;
+    }
+
+
+    .weekdays div {
+      padding: 8px;
+    }
+
+
+    /* =========================
+       날짜
+    ========================= */
+
+    .days {
+      gap: 5px;
+
+      margin-top: 10px;
+    }
+
+
+    .day {
+      height: 40px;
+
+      display: flex;
+
+      justify-content: center;
+      align-items: center;
+
+      border-radius: 50%;
+
+      cursor: pointer;
+
+      color: #8d6c6c;
+
+      font-weight: normal;
+
+      transition:
+        transform 0.15s ease,
+        background-color 0.2s ease;
+    }
+
+
+    .day:hover {
+      background-color: #F8E8EE;
+
+      transform: scale(1.08);
+    }
+
+
+    .day:active {
+      transform: scale(0.85);
+    }
+
+
+    /* =========================
+       오늘 날짜
+    ========================= */
+
+    .today {
+      background-color: #F7B6C9;
+
+      color: white;
+
+      font-weight: bold;
+    }
+
+
+    /* =========================
+       일기가 있는 날짜
+    ========================= */
+
+    .has-diary {
+      background-color: #F7B6C9;
+
+      color: white;
+    }
+
+
+    /* =========================
+       빈 날짜
+    ========================= */
+
+    .empty {
+      cursor: default;
+    }
+
+
+    .empty:hover {
+      background-color: transparent;
+
+      transform: none;
+    }
+
+
+    /* =====================================================
+       음악 카드
+    ===================================================== */
+
+    .music-card {
+      width: 280px;
+      height: 450px;
+
+      background: #FFFFFF;
+
+      border-radius: 20px;
+
+      box-shadow:
+        0 10px 25px
+        rgba(180, 150, 160, 0.25);
+
+      box-sizing: border-box;
+
+      padding: 20px;
+
+      display: flex;
+      flex-direction: column;
+
+      align-items: center;
+
+      flex-shrink: 0;
+    }
+
+
+    /* =========================
+       음악 카드 장식
+    ========================= */
+
+    .music-card-title {
+      color: #9b7b86;
+
+      font-size: 18px;
+
+      margin-bottom: 15px;
+
+      white-space: nowrap;
+    }
+
+
+    /* =====================================================
+       아이팟
+    ===================================================== */
+
+    .ipod {
+      width: 205px;
+      height: 340px;
+
+      background: linear-gradient(
+        145deg,
+        #fefefe,
+        #e9e9e9
+      );
+
+      border-radius: 22px;
+
+      padding: 12px;
+
+      box-sizing: border-box;
+
+      box-shadow:
+        inset 0 0 0 2px #dedede,
+        0 8px 15px
+        rgba(150, 130, 135, 0.25);
+
+      display: flex;
+      flex-direction: column;
+
+      align-items: center;
+    }
+
+
+    /* =========================
+       아이팟 화면
+    ========================= */
+
+    .ipod-screen {
+      width: 180px;
+      height: 125px;
+
+      background: #f4f4f4;
+
+      border-radius: 8px;
+
+      overflow: hidden;
+
+      box-shadow:
+        inset 0 0 8px
+        rgba(0, 0, 0, 0.15);
+
+      position: relative;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+    }
+
+
+    .ipod-screen iframe {
+      width: 100%;
+      height: 100%;
+
+      border: none;
+    }
+
+
+    /* =========================
+       영상 없을 때
+    ========================= */
+
+    .empty-screen {
+      color: #b29da4;
+
+      font-size: 13px;
+
+      text-align: center;
+
+      line-height: 1.5;
+
+      padding: 15px;
+    }
+
+
+    /* =====================================================
+       아이팟 휠
+    ===================================================== */
+
+    .ipod-wheel {
+      width: 115px;
+      height: 115px;
+
+      margin-top: 25px;
+
+      border-radius: 50%;
+
+      background: #f7f7f7;
+
+      box-shadow:
+        inset 0 0 0 1px #dddddd,
+        0 3px 5px
+        rgba(150, 130, 135, 0.15);
+
+      position: relative;
+
+      display: flex;
+
+      justify-content: center;
+      align-items: center;
+    }
+
+
+    .wheel-center {
+      width: 42px;
+      height: 42px;
+
+      background: #e8e8e8;
+
+      border-radius: 50%;
+
+      box-shadow:
+        inset 0 0 0 1px #d5d5d5;
+    }
+
+
+    .wheel-text {
+      position: absolute;
+
+      color: #9b858d;
+
+      font-size: 11px;
+
+      pointer-events: none;
+    }
+
+
+    .wheel-top {
+      top: 9px;
+    }
+
+
+    .wheel-bottom {
+      bottom: 9px;
+    }
+
+
+    .wheel-left {
+      left: 10px;
+    }
+
+
+    .wheel-right {
+      right: 10px;
+    }
+
+
+    /* =====================================================
+       음악 추가 버튼
+    ===================================================== */
+
+    .music-add-button {
+      margin-top: 15px;
+
+      border: none;
+
+      background-color: #F7B6C9;
+
+      color: white;
+
+      font-family: inherit;
+
+      font-size: 14px;
+
+      padding: 8px 16px;
+
+      border-radius: 20px;
+
+      cursor: pointer;
+
+      transition:
+        transform 0.15s ease,
+        background-color 0.2s ease;
+    }
+
+
+    .music-add-button:hover {
+      background-color: #e99eb5;
+
+      transform: translateY(-2px);
+    }
+
+
+    .music-add-button:active {
+      transform: scale(0.92);
+    }
+
+
+    /* =========================
+       삭제 버튼
+    ========================= */
+
+    .music-delete {
+      border: none;
+
+      background: none;
+
+      color: #c5aab2;
+
+      font-family: inherit;
+
+      font-size: 12px;
+
+      cursor: pointer;
+
+      margin-top: 5px;
+
+      transition:
+        transform 0.15s ease,
+        color 0.2s ease;
+    }
+
+
+    .music-delete:hover {
+      color: #d9829d;
+
+      transform: translateY(-2px);
+    }
+
+
+    .music-delete:active {
+      transform: scale(0.92);
+    }
+
+
+    /* =====================================================
+       음악 추가 팝업
+    ===================================================== */
+
+    .music-modal {
+      position: fixed;
+
+      inset: 0;
+
+      background: rgba(247, 182, 201, 0.35);
+
+      display: none;
+
+      justify-content: center;
+      align-items: center;
+
+      z-index: 1000;
+    }
+
+
+    .music-popup {
+      width: 330px;
+
+      background: white;
+
+      border-radius: 20px;
+
+      padding: 25px;
+
+      box-sizing: border-box;
+
+      box-shadow:
+        0 15px 35px
+        rgba(150, 110, 125, 0.25);
+
+      text-align: center;
+    }
+
+
+    .music-popup h2 {
+      color: #8d6c6c;
+
+      font-size: 20px;
+
+      margin-top: 0;
+    }
+
+
+    .youtube-input {
+      width: 100%;
+
+      height: 42px;
+
+      box-sizing: border-box;
+
+      border: 1px solid #ead5dc;
+
+      border-radius: 12px;
+
+      padding: 0 12px;
+
+      outline: none;
+
+      font-family: inherit;
+
+      color: #8d6c6c;
+    }
+
+
+    .youtube-input:focus {
+      border-color: #F7B6C9;
+    }
+
+
+    .popup-buttons {
+      display: flex;
+
+      justify-content: center;
+
+      gap: 10px;
+
+      margin-top: 15px;
+    }
+
+
+    .popup-buttons button {
+      border: none;
+
+      padding: 8px 15px;
+
+      border-radius: 15px;
+
+      font-family: inherit;
+
+      cursor: pointer;
+
+      transition:
+        transform 0.15s ease,
+        background-color 0.2s ease;
+    }
+
+
+    .popup-buttons button:hover {
+      transform: translateY(-2px);
+    }
+
+
+    .popup-buttons button:active {
+      transform: scale(0.92);
+    }
+
+
+    .cancel-button {
+      background: #f1e8eb;
+
+      color: #8d6c6c;
+    }
+
+
+    .add-button {
+      background: #F7B6C9;
+
+      color: white;
+    }
+
+
+    /* =========================
+       화면이 작아졌을 때
+    ========================= */
+
+    @media (max-width: 900px) {
+
+      .content-area {
+        flex-direction: column;
+      }
+
+      .music-card {
+        width: 100%;
+        max-width: 600px;
+      }
+
+    }
+
+  </style>
+</head>
+
+
+<body>
+
+  <div class="container">
+
+
+    <!-- 제목 -->
+
+    <img
+      src="title.png"
+      alt="my little diary"
+      class="title-img"
+    >
+
+
+    <!-- =================================================
+         달력 + 음악 카드
+    ================================================= -->
+
+    <div class="content-area">
+
+
+      <!-- =========================
+           달력
+      ========================= -->
+
+      <div class="card">
+
+
+        <div class="input-bar">
+
+          <div class="calendar-header">
+
+            <button
+              class="month-button"
+              onclick="previousMonth()"
+            >
+              &lt;
+            </button>
+
+
+            <span id="calendarHeader"></span>
+
+
+            <button
+              class="month-button"
+              onclick="nextMonth()"
+            >
+              &gt;
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <div class="calendar">
+
+
+          <div class="weekdays">
+
+            <div>일</div>
+            <div>월</div>
+            <div>화</div>
+            <div>수</div>
+            <div>목</div>
+            <div>금</div>
+            <div>토</div>
+
+          </div>
+
+
+          <div
+            class="days"
+            id="days"
+          ></div>
+
+
+        </div>
+
+
+      </div>
+
+
+      <!-- =================================================
+           음악 카드
+      ================================================= -->
+
+      <div class="music-card">
+
+
+        <div class="music-card-title">
+          ˚₊‧꒰ა ♫ ໒꒱ ‧₊˚
+        </div>
+
+
+        <!-- 아이팟 -->
+
+        <div class="ipod">
+
+
+          <!-- 화면 -->
+
+          <div
+            class="ipod-screen"
+            id="ipodScreen"
+          >
+
+            <div class="empty-screen">
+              YouTube 영상을<br>
+              추가해 주세요 ♡
+            </div>
+
+          </div>
+
+
+          <!-- 아이팟 휠 -->
+
+          <div class="ipod-wheel">
+
+
+            <div class="wheel-text wheel-top">
+              MENU
+            </div>
+
+
+            <div class="wheel-text wheel-bottom">
+              ▶
+            </div>
+
+
+            <div class="wheel-text wheel-left">
+              ◀
+            </div>
+
+
+            <div class="wheel-text wheel-right">
+              ▶
+            </div>
+
+
+            <div class="wheel-center"></div>
+
+
+          </div>
+
+
+        </div>
+
+
+        <!-- 추가 버튼 -->
+
+        <button
+          class="music-add-button"
+          onclick="openMusicModal()"
+        >
+          ＋ 음악 추가
+        </button>
+
+
+        <!-- 삭제 -->
+
+        <button
+          class="music-delete"
+          onclick="deleteMusic()"
+          id="deleteMusicButton"
+          style="display: none;"
+        >
+          음악 삭제
+        </button>
+
+
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+  <!-- =================================================
+       음악 추가 팝업
+  ================================================= -->
+
+  <div
+    class="music-modal"
+    id="musicModal"
+  >
+
+    <div class="music-popup">
+
+
+      <h2>
+        🎵 음악 추가
+      </h2>
+
+
+      <input
+        type="text"
+        id="youtubeInput"
+        class="youtube-input"
+        placeholder="YouTube 링크를 넣어주세요"
+      >
+
+
+      <div class="popup-buttons">
+
+
+        <button
+          class="cancel-button"
+          onclick="closeMusicModal()"
+        >
+          취소
+        </button>
+
+
+        <button
+          class="add-button"
+          onclick="addMusic()"
+        >
+          추가하기
+        </button>
+
+
+      </div>
+
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+
+    /* =========================
+       오늘 날짜
+    ========================= */
+
+    const today = new Date();
+
+    const todayYear =
+      today.getFullYear();
+
+    const todayMonth =
+      today.getMonth();
+
+    const todayDate =
+      today.getDate();
+
+
+    /* =========================
+       처음 보여줄 달
+    ========================= */
+
+    let calendarYear =
+      todayYear;
+
+    let calendarMonth =
+      todayMonth;
+
+
+    /* =========================
+       달력 만들기
+    ========================= */
+
+    function makeCalendar() {
+
+      const header =
+        document.getElementById(
+          "calendarHeader"
+        );
+
+
+      const daysContainer =
+        document.getElementById(
+          "days"
+        );
+
+
+      header.innerText =
+        calendarYear +
+        "년 " +
+        (calendarMonth + 1) +
+        "월";
+
+
+      daysContainer.innerHTML = "";
+
+
+      const firstDay =
+        new Date(
+          calendarYear,
+          calendarMonth,
+          1
+        ).getDay();
+
+
+      const lastDate =
+        new Date(
+          calendarYear,
+          calendarMonth + 1,
+          0
+        ).getDate();
+
+
+      /* 빈 날짜 */
+
+      for (
+        let i = 0;
+        i < firstDay;
+        i++
+      ) {
+
+        const emptyDay =
+          document.createElement(
+            "div"
+          );
+
+
+        emptyDay.className =
+          "day empty";
+
+
+        daysContainer.appendChild(
+          emptyDay
+        );
+
+      }
+
+
+      /* 날짜 */
+
+      for (
+        let day = 1;
+        day <= lastDate;
+        day++
+      ) {
+
+        const dayElement =
+          document.createElement(
+            "div"
+          );
+
+
+        dayElement.className =
+          "day";
+
+
+        dayElement.innerText =
+          day;
+
+
+        /* 오늘 */
+
+        if (
+          calendarYear === todayYear &&
+          calendarMonth === todayMonth &&
+          day === todayDate
+        ) {
+
+          dayElement.classList.add(
+            "today"
+          );
+
+        }
+
+
+        /* 일기가 있는 날짜 */
+
+        const savedDiary =
+          localStorage.getItem(
+
+            "diary-" +
+            calendarYear +
+            "-" +
+            (calendarMonth + 1) +
+            "-" +
+            day
+
+          );
+
+
+        if (savedDiary) {
+
+          dayElement.classList.add(
+            "has-diary"
+          );
+
+        }
+
+
+        /* 날짜 클릭 */
+
+        dayElement.onclick =
+          function() {
+
+            openDiary(day);
+
+          };
+
+
+        daysContainer.appendChild(
+          dayElement
+        );
+
+      }
+
+    }
+
+
+    /* =========================
+       이전 달
+    ========================= */
+
+    function previousMonth() {
+
+      calendarMonth--;
+
+
+      if (calendarMonth < 0) {
+
+        calendarMonth = 11;
+
+        calendarYear--;
+
+      }
+
+
+      makeCalendar();
+
+    }
+
+
+    /* =========================
+       다음 달
+    ========================= */
+
+    function nextMonth() {
+
+      calendarMonth++;
+
+
+      if (calendarMonth > 11) {
+
+        calendarMonth = 0;
+
+        calendarYear++;
+
+      }
+
+
+      makeCalendar();
+
+    }
+
+
+    /* =========================
+       일기 열기
+    ========================= */
+
+    function openDiary(day) {
+
+      localStorage.setItem(
+        "selectedDate",
+        day
+      );
+
+
+      localStorage.setItem(
+        "selectedYear",
+        calendarYear
+      );
+
+
+      localStorage.setItem(
+        "selectedMonth",
+        calendarMonth + 1
+      );
+
+
+      location.href =
+        "diary.html";
+
+    }
+
+
+    /* =================================================
+       음악 카드
+    ================================================= */
+
+
+    function openMusicModal() {
+
+      document.getElementById(
+        "musicModal"
+      ).style.display = "flex";
+
+
+      document.getElementById(
+        "youtubeInput"
+      ).focus();
+
+    }
+
+
+    function closeMusicModal() {
+
+      document.getElementById(
+        "musicModal"
+      ).style.display = "none";
+
+
+      document.getElementById(
+        "youtubeInput"
+      ).value = "";
+
+    }
+
+
+    /* =========================
+       YouTube 영상 ID 가져오기
+    ========================= */
+
+    function getYoutubeId(url) {
+
+      try {
+
+        const parsedUrl =
+          new URL(url);
+
+
+        /* youtube.com/watch?v= */
+
+        if (
+          parsedUrl.hostname.includes(
+            "youtube.com"
+          )
+        ) {
+
+          return parsedUrl.searchParams.get(
+            "v"
+          );
+
+        }
+
+
+        /* youtu.be/ */
+
+        if (
+          parsedUrl.hostname.includes(
+            "youtu.be"
+          )
+        ) {
+
+          return parsedUrl.pathname
+            .substring(1);
+
+        }
+
+
+      } catch (error) {
+
+        return null;
+
+      }
+
+
+      return null;
+
+    }
+
+
+    /* =========================
+       음악 추가
+    ========================= */
+
+    function addMusic() {
+
+      const url =
+        document.getElementById(
+          "youtubeInput"
+        ).value.trim();
+
+
+      const videoId =
+        getYoutubeId(url);
+
+
+      if (!videoId) {
+
+        alert(
+          "올바른 YouTube 링크를 넣어주세요!"
+        );
+
+        return;
+
+      }
+
+
+      /* YouTube 영상 */
+
+      const screen =
+        document.getElementById(
+          "ipodScreen"
+        );
+
+
+      screen.innerHTML = `
+
+        <iframe
+          src="https://www.youtube.com/embed/${videoId}"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+
+      `;
+
+
+      /* 삭제 버튼 */
+
+      document.getElementById(
+        "deleteMusicButton"
+      ).style.display =
+        "block";
+
+
+      /* 저장 */
+
+      localStorage.setItem(
+        "diaryMusic",
+        JSON.stringify({
+          url: url,
+          videoId: videoId
+        })
+      );
+
+
+      closeMusicModal();
+
+    }
+
+
+    /* =========================
+       음악 삭제
+    ========================= */
+
+    function deleteMusic() {
+
+      localStorage.removeItem(
+        "diaryMusic"
+      );
+
+
+      document.getElementById(
+        "ipodScreen"
+      ).innerHTML = `
+
+        <div class="empty-screen">
+          YouTube 영상을<br>
+          추가해 주세요 ♡
+        </div>
+
+      `;
+
+
+      document.getElementById(
+        "deleteMusicButton"
+      ).style.display =
+        "none";
+
+    }
+
+
+    /* =========================
+       저장된 음악 불러오기
+    ========================= */
+
+    function loadMusic() {
+
+      const savedMusic =
+        localStorage.getItem(
+          "diaryMusic"
+        );
+
+
+      if (!savedMusic) {
+        return;
+      }
+
+
+      try {
+
+        const music =
+          JSON.parse(savedMusic);
+
+
+        document.getElementById(
+          "ipodScreen"
+        ).innerHTML = `
+
+          <iframe
+            src="https://www.youtube.com/embed/${music.videoId}"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+
+        `;
+
+
+        document.getElementById(
+          "deleteMusicButton"
+        ).style.display =
+          "block";
+
+
+      } catch (error) {
+
+        localStorage.removeItem(
+          "diaryMusic"
+        );
+
+      }
+
+    }
+
+
+    /* =========================
+       처음 실행
+    ========================= */
+
+    makeCalendar();
+
+    loadMusic();
+
+  </script>
+
+</body>
+</html>
